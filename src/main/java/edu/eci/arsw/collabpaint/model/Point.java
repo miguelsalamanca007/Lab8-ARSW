@@ -21,7 +21,7 @@ package edu.eci.arsw.collabpaint.model;
  * @author hcadavid
  */
 public class Point {
-    int x,y;
+    int x, y;
 
     public Point() {
     }
@@ -51,8 +51,5 @@ public class Point {
     public String toString() {
         return "Point{" + "x=" + x + ", y=" + y + '}';
     }
-    
-    
-    
-    
+
 }
