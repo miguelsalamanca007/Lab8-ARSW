@@ -9,8 +9,13 @@ var app = (function () {
     
     var stompClient = null;
 
+    var newPoint = {
+        "x": 0,
+        "y" : 0
+    }
+
     var addPointToCanvas = function (point) {        
-        var canvas = document.getElementById("canvas");
+        var canvas = document.getElementById("Canvas");
         var ctx = canvas.getContext("2d");
         ctx.beginPath();
         ctx.arc(point.x, point.y, 3, 0, 2 * Math.PI);
@@ -19,7 +24,7 @@ var app = (function () {
     
     
     var getMousePosition = function (evt) {
-        canvas = document.getElementById("canvas");
+        canvas = document.getElementById("Canvas");
         var rect = canvas.getBoundingClientRect();
         return {
             x: evt.clientX - rect.left,
@@ -46,10 +51,8 @@ var app = (function () {
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
             stompClient.subscribe('/topic/newpoint', function (eventbody) {
-                alert(eventbody);
-               
-                
-                
+                var point = JSON.parse(eventbody.body);
+                addPointToCanvas(point); 
             });
         });
 
@@ -62,10 +65,23 @@ var app = (function () {
     return {
 
         init: function () {
-            var can = document.getElementById("canvas");
-            
+            var canvas = $("#Canvas");
+            canvas = $("#Canvas")[0];
+            if (window.PointerEvent) {
+                canvas.addEventListener("pointerdown", function(event){
+                    newPoint = getMousePosition(event);
+                    sendPoint(newPoint);
+                })
+            }
+            else {
+                canvas.addEventListener("mousedown", function (event) {
+                    alert('mousedown at ' + event.clientX + ',' + event.clientY);
+    
+                });
+            }
             //websocket connection
             connectAndSubscribe();
+            
         },
 
         publishPoint: function(px,py){

@@ -16,7 +16,6 @@ public class pointController {
     @MessageMapping("/points")
     @SendTo("/topic/newpoint")
     public Point getPoints(Point point){
-        System.out.println("a");
         return point;
     }
     
