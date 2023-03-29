@@ -28,21 +28,34 @@ var app = (function () {
     };
 
 
+    function sendPoint(point){
+        var newPoint = {
+            "x" : point.x,
+            "y" : point.y
+        }
+        stompClient.send("/app/points",{},JSON.stringify(newPoint));
+
+    }
+
+
     var connectAndSubscribe = function () {
         console.info('Connecting to WS...');
         var socket = new SockJS('/stompendpoint');
         stompClient = Stomp.over(socket);
-        
         //subscribe to /topic/TOPICXX when connections succeed
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/TOPICXX', function (eventbody) {
+            stompClient.subscribe('/topic/newpoint', function (eventbody) {
+                alert(eventbody);
+               
                 
                 
             });
         });
 
     };
+
+    
     
     
 
@@ -58,9 +71,9 @@ var app = (function () {
         publishPoint: function(px,py){
             var pt=new Point(px,py);
             console.info("publishing point at "+pt);
+            //agregar la linea que envia el punto
+            sendPoint(pt);
             addPointToCanvas(pt);
-
-            //publicar el evento
         },
 
         disconnect: function () {
