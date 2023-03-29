@@ -28,10 +28,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </head>
     <body onload="app.init()">
         X:<input id="x" type="number"/>
-        Y:<input id="y" type="number"/>        
+        Y:<input id="y" type="number"/> 
+        number:<input id="num">       
         <button onclick="app.publishPoint($('#x').val(),$('#y').val())">Send point</button>
+        <button onclick="app.connect()">Connect</button>
         <div style="width: 30%; height: 400px;">
             <canvas id="Canvas" width="800" height="600"></canvas>
         </div>
+        
     </body>
 </html>
