@@ -11,6 +11,7 @@ var app = (function () {
 
     var SERVER = "";
     var TOPIC = "";
+    var TOPICPOLYGON = "";
 
     var newPoint = {
         "x": 0,
@@ -36,6 +37,23 @@ var app = (function () {
     };
 
 
+    function drawPolygon(points) {
+        var canvas = document.getElementById("Canvas");
+        var ctx = canvas.getContext("2d");
+        if(points.length > 4){
+            ctx.clearRect(0, 0, canvas.width, canvas.height);  
+        }
+        ctx.beginPath();
+        ctx.moveTo(points[0].x, points[0].y);
+        for (var i = 1; i < points.length; i++) {
+            ctx.lineTo(points[i].x, points[i].y);
+        }
+        ctx.lineTo(points[0].x,points[0].y);
+        ctx.closePath();
+        ctx.stroke();
+      }
+
+
     function sendPoint(point){
         var newPoint = {
             "x" : point.x,
@@ -57,6 +75,11 @@ var app = (function () {
                 var point = JSON.parse(eventbody.body);
                 addPointToCanvas(point); 
             });
+
+            stompClient.subscribe(TOPICPOLYGON,function (eventbody){
+                var points = JSON.parse(eventbody.body);
+                drawPolygon(points);
+            })
         });
 
     };
@@ -104,8 +127,9 @@ var app = (function () {
 
         connect: function(){
             var number = ($("#num").val());
-            SERVER = "/app/points." + number; 
+            SERVER = "/app/newpoint." + number; 
             TOPIC = "/topic/newpoint." + number;
+            TOPICPOLYGON = "/topic/newpolygon."+ number;
             connectAndSubscribe();
 
         }
