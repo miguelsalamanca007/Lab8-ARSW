@@ -2,7 +2,9 @@
 ### Arquitecturas de Software - ARSW
 ### Laboratorio - Broker de Mensajes STOMP con WebSockets + HTML5 Canvas.
 
+## Julian Castillo y Camilo Cantillo
 
+## NOTA: Todas las depedencias se modificaron para que corriera en un Java 17, a tener en cuenta.
 
 - Conectarse con un botón
 - publicar con eventos de mouse
